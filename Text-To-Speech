@@ -1,0 +1,156 @@
+# -*- coding: utf-8 -*-
+"""
+Text-to-Speech & Smart Assistant (Clean & Stable Version)
+---------------------------------------------------------
+✅ Features:
+1. Text-to-Speech (gTTS only — no pyttsx3 errors)
+2. PDF-to-Speech
+3. Multilingual (English, Hindi)
+4. Tone-based speech simulation
+5. Optional AI response generation (via OpenAI)
+"""
+
+# -------------------- INSTALLATIONS --------------------
+# Uncomment these if running in Google Colab:
+# !pip install gtts PyPDF2 pdf2image openai
+# !apt-get install -y poppler-utils
+
+# -------------------- IMPORTS --------------------
+import os
+import platform
+from gtts import gTTS
+from IPython.display import Audio, display
+import PyPDF2
+from pdf2image import convert_from_path
+import matplotlib.pyplot as plt
+from openai import OpenAI
+
+# Optional import: only if pyttsx3 is installed
+try:
+    import pyttsx3
+    has_pyttsx3 = True
+except ImportError:
+    has_pyttsx3 = False
+
+
+# -------------------- TEXT-TO-SPEECH (gTTS) --------------------
+def speak(text, tone="neutral", lang="en", filename="output.mp3", autoplay=True):
+    """Online Text-to-Speech using gTTS (safe and reliable)."""
+    tone_prefix = {
+        "friendly": "😊 ",
+        "formal": "📘 ",
+        "neutral": "",
+        "excited": "🎉 ",
+        "sad": "😢 ",
+        "robotic": "🤖 "
+    }
+    text = tone_prefix.get(tone, "") + text
+
+    try:
+        tts = gTTS(text=text, lang=lang, slow=False)
+        tts.save(filename)
+
+        if autoplay:
+            display(Audio(filename, autoplay=True))
+        else:
+            if platform.system() == "Windows":
+                os.system(f"start {filename}")
+            elif platform.system() == "Darwin":  # macOS
+                os.system(f"afplay {filename}")
+            else:  # Linux
+                os.system(f"mpg321 {filename}")
+
+    except Exception as e:
+        print(f"❌ Error in TTS: {e}")
+
+
+# -------------------- TEXT-TO-SPEECH (pyttsx3) --------------------
+def speak_pyttsx3(text, tone="neutral", lang="en"):
+    """Offline TTS using pyttsx3"""
+    engine = pyttsx3.init()
+    rate = engine.getProperty('rate')
+    voices = engine.getProperty('voices')
+
+    # Tone adjustments
+    if tone == "friendly":
+        engine.setProperty('rate', rate - 20)
+    elif tone == "formal":
+        engine.setProperty('rate', rate + 20)
+
+    # ---- SAFE VOICE SELECTION ----
+    # eSpeak in Colab usually has "english" and "english+f1"
+    voice_id = "english"
+    for v in voices:
+        if "english" in v.id.lower():
+            voice_id = v.id
+            break
+    engine.setProperty("voice", voice_id)
+
+    engine.say(text)
+    engine.runAndWait()
+
+
+
+
+
+# -------------------- PDF TEXT EXTRACTION --------------------
+def extract_text_from_pdf(pdf_file):
+    """Extracts readable text from a PDF file."""
+    text = ""
+    try:
+        with open(pdf_file, "rb") as f:
+            reader = PyPDF2.PdfReader(f)
+            for page in reader.pages:
+                content = page.extract_text()
+                if content:
+                    text += content + " "
+        return text.strip()
+    except Exception as e:
+        print(f"❌ Error reading PDF: {e}")
+        return ""
+
+# -------------------- PDF TO SPEECH --------------------
+def pdf_to_speech(pdf_file, tone="neutral", lang="en"):
+    """Converts an entire PDF to speech using gTTS."""
+    text = extract_text_from_pdf(pdf_file)
+    if not text:
+        print("⚠️ No text found in the PDF (it might be image-based).")
+        return
+    speak(text, tone, lang)
+
+# -------------------- PDF PREVIEW --------------------
+def preview_pdf_page(pdf_file, page_num=0):
+    """Displays a preview image of a PDF page."""
+    try:
+        pages = convert_from_path(pdf_file, dpi=150)
+        plt.imshow(pages[page_num])
+        plt.axis("off")
+        plt.show()
+    except Exception as e:
+        print(f"❌ Error previewing PDF: {e}")
+
+# -------------------- AI CHAT + SPEECH --------------------
+def chat_and_speak(prompt, tone="friendly", lang="en"):
+    """Generates AI response using OpenAI API and speaks it aloud."""
+    try:
+        client = OpenAI(api_key="YOUR_API_KEY_HERE")  # Replace with your actual key
+        response = client.chat.completions.create(
+            model="gpt-5-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        reply = response.choices[0].message.content
+        print(f"\n🤖 Assistant: {reply}\n")
+        speak(reply, tone, lang)
+    except Exception as e:
+        print(f"❌ Error in AI chat: {e}")
+
+# -------------------- DEMO --------------------
+if __name__ == "__main__":
+    # Example 1 – Simple TTS
+    speak("Hello Ayush! Your voice assistant is now working perfectly.", tone="friendly", lang="en")
+
+    # Example 2 – PDF to Speech (adjust PDF path)
+    # pdf_to_speech("BCSE_0101.pdf", tone="formal", lang="en")
+
+    # Example 3 – AI + Speech
+    # chat_and_speak("Tell me a short AI-related joke.", tone="friendly", lang="en")
