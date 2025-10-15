@@ -1,25 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Project ZORA - Unified Voice Assistant (Linux-first)
+Project ZORA - Unified Voice Assistant.
 
-Features
-- Continuous STT (Google via speech_recognition; optional Whisper via faster-whisper)
-- Automatic language detection (Whisper or langdetect fallback)
-- Sentiment + (optional) emotion analysis via HuggingFace transformers
-- Intent parsing for common tasks (YouTube, Spotify, Google/Chrome search, open apps, time, notes, etc.)
-- Action execution via subprocess/webbrowser (Linux-first; basic macOS/Windows fallbacks)
-- TTS responses in the same language (gTTS primary, pyttsx3 fallback)
-- Modular functions/classes, simple logging, and a responsive main loop
-
-Notes
-- Dependencies are optional; the assistant degrades gracefully if some are missing.
-- Runs best on Linux with a working microphone and audio output.
-
-CLI examples
-- python zora_unified.py --engine auto --loop
-- python zora_unified.py --engine whisper --once
-- python zora_unified.py --no-actions --print-only
+Unified STT, sentiment/emotion, intent parsing, actions, and TTS.
 """
 
 from __future__ import annotations
@@ -178,7 +162,6 @@ class STTService:
         else:
             return self._listen_google(timeout, phrase_time_limit)
 
-    # Google STT via speech_recognition
     def _listen_google(self, timeout: Optional[float], phrase_time_limit: Optional[float]) -> Optional[TranscriptionResult]:
         assert sr is not None
         recognizer = sr.Recognizer()
@@ -192,8 +175,6 @@ class STTService:
             return None
 
         try:
-            # Google Web Speech API requires a language; we'll pass None->default en-US.
-            # We will detect language from the returned text using langdetect.
             text = recognizer.recognize_google(audio)  # type: ignore
             logger.info(f"Heard: {text}")
         except sr.UnknownValueError:  # type: ignore
@@ -211,7 +192,6 @@ class STTService:
                 language = "en"
         return TranscriptionResult(text=text, language=language, confidence=0.6, engine="google")
 
-    # Whisper STT via faster-whisper
     def _listen_whisper(self, timeout: Optional[float], phrase_time_limit: Optional[float]) -> Optional[TranscriptionResult]:
         self._ensure_whisper()
         if self._whisper_model is None:
