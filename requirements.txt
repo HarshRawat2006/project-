@@ -1,0 +1,70 @@
+# Project ZORA - Unified Voice Assistant with Sentiment Analysis
+# Core Dependencies
+
+# Speech Recognition
+speechrecognition>=3.10.0
+pyaudio>=0.2.11
+
+# Advanced Speech Processing (Optional)
+faster-whisper>=0.9.0
+torch>=2.0.0
+torchaudio>=2.0.0
+
+# Sentiment Analysis and NLP
+transformers>=4.30.0
+torch>=2.0.0
+datasets>=2.12.0
+
+# Text-to-Speech
+gtts>=2.3.0
+pyttsx3>=2.90
+
+# Web and API
+requests>=2.31.0
+webbrowser2>=0.2.1
+
+# Search and Media
+pytube>=15.0.0
+duckduckgo-search>=3.8.0
+
+# Music and Entertainment
+spotipy>=2.23.0
+
+# PDF Processing (Optional)
+PyPDF2>=3.0.0
+pdf2image>=1.16.0
+
+# Language Processing (Optional)
+language-tool-python>=2.7.1
+deepmultilingualpunctuation>=0.1.0
+
+# System Integration
+pyautogui>=0.9.54
+psutil>=5.9.0
+
+# Configuration and Utilities
+python-dotenv>=1.0.0
+pathlib>=1.0.1
+
+# Audio Processing
+pydub>=0.25.1
+librosa>=0.10.0
+
+# Optional: OpenAI Integration
+openai>=1.0.0
+
+# Development and Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Platform-specific dependencies
+# Windows
+pywin32>=306; sys_platform == "win32"
+
+# macOS
+pyobjc>=9.0; sys_platform == "darwin"
+
+# Linux
+python3-xlib>=0.15; sys_platform == "linux"
