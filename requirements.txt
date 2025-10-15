@@ -1,0 +1,64 @@
+# ══════════════════════════════════════════════════════════════════════
+#                   PROJECT ZORA - REQUIREMENTS
+# ══════════════════════════════════════════════════════════════════════
+# Voice Assistant with Sentiment Analysis
+# Python 3.8+ required
+# ══════════════════════════════════════════════════════════════════════
+
+# Core Dependencies
+# ──────────────────────────────────────────────────────────────────────
+
+# Speech Recognition
+SpeechRecognition>=3.10.0
+PyAudio>=0.2.13  # For microphone access
+
+# Sentiment & Emotion Analysis
+transformers>=4.30.0
+torch>=2.0.0  # Required by transformers
+sentencepiece>=0.1.99  # Required by some models
+
+# Language Detection
+langdetect>=1.0.9
+
+# Text-to-Speech
+gTTS>=2.3.0  # Google Text-to-Speech (online)
+pyttsx3>=2.90  # Offline TTS (optional)
+
+# Web Requests
+requests>=2.31.0
+
+# Environment Variables (optional)
+python-dotenv>=1.0.0
+
+
+# Optional Dependencies
+# ──────────────────────────────────────────────────────────────────────
+
+# YouTube Integration (optional - for autoplay)
+pytube>=15.0.0
+
+# Spotify Integration (optional)
+spotipy>=2.23.0
+
+# Advanced Search (optional)
+duckduckgo-search>=3.9.0
+
+
+# Platform-Specific Notes
+# ──────────────────────────────────────────────────────────────────────
+# 
+# Windows:
+#   - PyAudio: Download wheel from https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
+#   - Install with: pip install PyAudio-0.2.13-cpXX-cpXX-win_amd64.whl
+#
+# macOS:
+#   - Install portaudio first: brew install portaudio
+#   - Then install PyAudio: pip install pyaudio
+#
+# Linux:
+#   - Install dependencies: sudo apt-get install python3-pyaudio portaudio19-dev
+#   - Or use: sudo apt-get install espeak espeak-data libespeak1 libespeak-dev
+#   - Then install: pip install pyaudio
+#
+# For pyttsx3 on Linux:
+#   - sudo apt-get install espeak espeak-ng
