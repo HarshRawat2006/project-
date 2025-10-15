@@ -1,0 +1,42 @@
+# Project ZORA - Unified Voice Assistant Requirements
+# Core dependencies for full functionality
+
+# Speech Recognition
+SpeechRecognition>=3.10.0
+pyaudio>=0.2.11  # Required for microphone input
+
+# Language Detection
+langdetect>=1.0.9
+
+# Sentiment Analysis (choose one or both)
+transformers>=4.21.0
+torch>=1.12.0  # Required for transformers
+textblob>=0.17.1  # Alternative/fallback sentiment analysis
+
+# Text-to-Speech (choose one or both)
+gtts>=2.3.0  # Google Text-to-Speech (online)
+pyttsx3>=2.90  # Offline Text-to-Speech
+
+# Web automation and search
+requests>=2.28.0
+python-dotenv>=0.20.0
+
+# Optional integrations
+pytube>=12.1.0  # YouTube search and video access
+duckduckgo-search>=3.8.0  # Enhanced web search
+spotipy>=2.22.0  # Spotify integration
+
+# System dependencies (install via system package manager)
+# Ubuntu/Debian: sudo apt-get install portaudio19-dev python3-dev
+# macOS: brew install portaudio
+# Windows: Usually included with pyaudio wheel
+
+# Optional system tools for better audio support
+# Ubuntu/Debian: sudo apt-get install espeak espeak-data libespeak1 libespeak-dev
+# macOS: brew install espeak
+# Windows: Download and install eSpeak from http://espeak.sourceforge.net/
+
+# For development and testing
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0
